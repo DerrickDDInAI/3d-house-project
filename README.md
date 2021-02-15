@@ -27,7 +27,7 @@ It is a 2 weeks project.
 The deadline to complete it is scheduled to `25/02/2021 at 5 p.m.`.
 
 ### How?
-- [x] Collect *LIDAR PLANES*'s data
+- [x] Web scrap *LIDAR PLANES*'s data using Selenium library
 - [ ] Search and implement new librairies
 - [ ] Read and use shapefiles
 - [ ] Read and use geoTIFFs

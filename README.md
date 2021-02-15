@@ -11,7 +11,7 @@ The project is structured as follows:
 3d-house-project/
 |-- main.py :script that the end-user must run to execute the program.
 |-- file1.py :
-|-- scrapers/ :directory contains all the scripts to
+|-- directory/ :directory contains all the scripts to
 |-- test/
 |   |-- init.py
 |   |   |-- test_main.py :to run all the unit tests

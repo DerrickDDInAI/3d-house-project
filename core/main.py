@@ -33,18 +33,44 @@ from house import House
 # ============================================================
 # Main functions
 # ============================================================
+
 def get_user_input():
-    pass
+    """
+    Function to get the address from the user.
 
-
-
+    To Do: make it more robust (maybe use Regex)
+    """
+    # Loop the input session until the user enters the address in a right format
+    # waiting_for_user_input = True
+    # while waiting_for_user_input:
+    print("\nPlease enter the address of a building and I will plot it in 3D.")
+    street_name = input("street name: ")
+    # if not isinstance(street_name, str):
+    house_number = int(input("house number: "))
+    box_number = input("box number (just press enter if no box): ")
+    postal_code = int(input("postal code: "))
+    town = input("town: ")
+        
+    return (street_name, house_number, box_number, postal_code, town)
 
 def main() -> None:
-    house_test = House("Smeyerspad", 24, 2910, "Essen")
+    # Welcoming message
+    print("Hello!")
+    print("I'm happy to see you!")
+    print("Well, I don't really see you! ;)")
+    print('Anyway, welcome to the 3D House Project!')
+    print("I can plot a house in 3D providing it is in my database:")
+    print("Currently, any house in Flanders (Belgium).")
+
+    # Get the address from the user
+    street_name, house_number, box_number, postal_code, town = get_user_input()
+    house_test = House(street_name, house_number, postal_code, town, box_number=box_number)
     house_test.get_address_info_from_api()
     house_test.get_lambert72_coordinates()
     house_test.get_house_geometry()
+    house_test.get_map_rectangle_id()
     print(house_test)
+    print(house_test.map_rectangle_id)
 
 # ============================================================
 # Run

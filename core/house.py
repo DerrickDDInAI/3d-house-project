@@ -9,7 +9,15 @@ import requests
 from typing import List, Set, Dict, TypedDict, Tuple, Optional
 
 ## Import 3rd party modules
+import pandas as pd
 from shapely.geometry import Polygon
+
+from tiff_boundingbox import get_all_tiff_boundingbox
+
+
+# ============================================================
+# Classes Definition
+# ============================================================
 
 class House:
     """
@@ -31,7 +39,7 @@ class House:
         """
         self.street_name: str = street_name
         self.house_number: int = house_number
-        self.box_number: int =  box_number
+        self.box_number: str =  box_number
         self.postal_code: int = postal_code
         self.town: str = town
 
@@ -78,29 +86,36 @@ class House:
         building_unit_id_url: str = self.address_info_json["adresMatches"][0]["adresseerbareObjecten"][0]["detail"]
 
         # 2. Request the info for this building unit ID
-        building_unit_id_request = requests.get(building_unit_id_url)
-        building_unit_id_json = json.loads(building_unit_id_request.content)
+        building_unit_id_request: requests.models.Response = requests.get(building_unit_id_url)
+        building_unit_id_json: dict = json.loads(building_unit_id_request.content)
 
         # 3. Get the url of the building ID
         building_id_url: str = building_unit_id_json["gebouw"]["detail"]
 
         # 4. Request the info for this building unit ID
-        building_id_request = requests.get(building_id_url)
-        building_id_json = json.loads(building_id_request.content)
+        building_id_request: requests.models.Response = requests.get(building_id_url)
+        building_id_json: dict = json.loads(building_id_request.content)
 
         # 5. Get the geometry of the house as a Polygon object
         self.geometry: Polygon = Polygon(building_id_json["geometriePolygoon"]["polygon"]["coordinates"][0])
 
 
-    def check_map_grid_(self):
+    def get_map_rectangle_id(self):
         """
-        Function to check in which grid the house is located on the Belgian topographic map *NGI 1/1*.
+        Function to check in which grid rectangle the house is located on the Flanders topographic map *NGI 1/1*.
         Process:
         As the coordinates of both the house and the map uses the Lambert 72 system, 
-        we can directly compute if the house is in the **BoundingBox** (= geographic boundaries) of a grid.
+        we can directly compute if the house is in the **BoundingBox** (= geographic boundaries) of a rectangle.
 
         About the NGI 1/1 map:
-        The Belgian National Geographic Institute (NGI) divided the Belgian topographic map in a grid of 43 rectangles.
+        The Belgian National Geographic Institute (NGI) divided the Flanders topographic map in a grid of 43 rectangles.
         Each rectangle covers an area of 640 km² (32 km in X direction, 20 km in Y direction).
         """
-        pass
+        # Get the DataFrame containing the **BoundingBox** of a each rectangle
+        tiff_boundingbox_df: pd.DataFrame = get_all_tiff_boundingbox()
+
+        # Find in which rectangle **BoundingBox** the house is located
+        map_rectangle_id_np: pd.core.series.Series = tiff_boundingbox_df.GeoTiff_ID[tiff_boundingbox_df.BoundingBox.apply(lambda bb_tuple: (bb_tuple[0] <= self.X_Lambert72 <= bb_tuple[2]) and (bb_tuple[1] <= self.Y_Lambert72 <= bb_tuple[3]))]
+
+        # Get the id from the map_rectangle_id_np (which is a numpy representation)
+        self.map_rectangle_id: str = map_rectangle_id_np.values[0]

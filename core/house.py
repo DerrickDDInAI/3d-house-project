@@ -12,7 +12,7 @@ from typing import List, Set, Dict, TypedDict, Tuple, Optional
 import pandas as pd
 from shapely.geometry import Polygon
 
-from geotiff import get_dsm_dtm_tiffs
+from .geotiff import get_dsm_dtm_tiffs
 
 
 # ============================================================
@@ -21,38 +21,43 @@ from geotiff import get_dsm_dtm_tiffs
 
 class House:
     """
-    Address has 3 attributes: street_name, house_number, box_number, postal_code, town, X_Lambert72, Y_Lambert72
+    Address has 7 attributes: street_name, house_number, postal_code, town, X_Lambert72, Y_Lambert72, geometry
     * street_name: string = the street name
     * house_number: int = the house number
-    * box_number: int = the box number
     * postal_code: int = the postal code
     * town: string = the town
     * X_Lambert72: float = X coordinate in the *Belgian Lambert 72* system (EPSG:31370)
     * Y_Lambert72: float = Y coordinate in the *Belgian Lambert 72* system (EPSG:31370)
     * geometry: geometric shape of the house
     """
-    def __init__(self, street_name, house_number, postal_code, town, box_number=None, XY_Lambert72=None) -> None: 
+    def __init__(self, street_name, house_number, postal_code, town) -> None: 
         """
-        Function to create an instance of Address class
+        Function to create an instance of House class
         By default:
         * caption is "game" if no caption is provided
         """
         self.street_name: str = street_name
         self.house_number: int = house_number
-        self.box_number: str =  box_number
         self.postal_code: int = postal_code
         self.town: str = town
 
-        # Unpack the x and y coordinates tuple
-        self.X_Lambert72: float
-        self.Y_Lambert72: float
-        if XY_Lambert72 is not None:
-            self.X_Lambert72, self.Y_Lambert72 = XY_Lambert72
-        else:
-            self.X_Lambert72 = None
-            self.Y_Lambert72 = None
+        self.X_Lambert72: float = None
+        self.Y_Lambert72: float = None
+        self.geometry: Polygon = None
 
-        self.geometry = None
+
+    # @classmethod
+    # def from_string(cls, address_str):
+    #     """
+    #     Class method to use as alternative constructor:
+    #     Param: an address string in this format: "street_name, house_number, postal_code, town"
+        
+    #     Return: House instance
+    #     """
+    #     street_name, house_number, postal_code, town = address_str.split(",").strip()
+        
+    #     return cls(street_name, house_number, postal_code, town)
+
 
     def __str__(self) -> str:
         """

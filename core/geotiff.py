@@ -20,8 +20,6 @@ from typing import List, Set, Dict, TypedDict, Tuple, Optional
 import pandas as pd
 import rasterio as rio
 
-## Import local modules
-
 
 # ============================================================
 # Main functions

@@ -8,6 +8,7 @@ Main script that executes the program.
 ## Import internal modules
 # import os.path
 import json
+from matplotlib.pyplot import title
 import requests
 from typing import List, Set, Dict, TypedDict, Tuple, Optional
 
@@ -22,12 +23,11 @@ from rasterio.plot import show
 from rasterio.plot import show_hist
 from shapely.geometry.polygon import Polygon
 
-# import earthpy as et
-# import earthpy.spatial as es
 import earthpy.plot as ep
 
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
+import plotly.graph_objects as go
+# import matplotlib.pyplot as plt
+# from mpl_toolkits.mplot3d import Axes3D
 
 ## Import local modules
 from house import House
@@ -99,6 +99,7 @@ def main() -> None:
     requested_house.get_tiffs_path()
     print("Please wait, I'm getting the necessary information to plot the building.")
     print("Address : ", requested_house)
+    print("Geometric shape bounds: ", requested_house.geometry.bounds)
     print("DSM filepath: ", requested_house.dsm_filepath)
     print("DTM filepath: ", requested_house.dtm_filepath)
 
@@ -108,25 +109,19 @@ def main() -> None:
 
     # Compute the Canopy Height Model (CHM) image of the building
     chm_image = dsm_image - dtm_image
-    print('chm_image')
 
     # Plot the building CHM in 2D
-    ep.plot_bands(chm_image,
-              cmap='terrain',
-              title="Building CHM")
-    plt.show()
+    # ep.plot_bands(chm_image,
+    #           cmap='terrain',
+    #           title="Building CHM")
+    # plt.show()
 
     # Plot the building in 3D
-    x = np.arange(0,chm_image.shape[2],1)
-    y = np.arange(0,chm_image.shape[1],1)
-    x,y = np.meshgrid(x[:chm_image.shape[2]], y[:chm_image.shape[1]])
+    fig = go.Figure(data=[go.Surface(z=chm_image[0])])
+    fig.update_layout(title="3D Building")
+    fig.show()
 
-    figure = plt.figure(1, figsize = (12, 4))
-    subplot3d = plt.subplot(111, projection='3d')
-    surface = subplot3d.plot_surface(x, y, chm_image[0], rstride=1, cstride=2, cmap=plt.cm.coolwarm, linewidth=0.1)
-    plt.show()
 
-    
 # ============================================================
 # Run
 # ============================================================

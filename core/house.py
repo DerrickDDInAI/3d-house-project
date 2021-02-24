@@ -12,7 +12,7 @@ from typing import List, Set, Dict, TypedDict, Tuple, Optional
 import pandas as pd
 from shapely.geometry import Polygon
 
-from tiff_boundingbox import get_all_tiff_boundingbox
+from geotiff import get_dsm_dtm_tiffs
 
 
 # ============================================================
@@ -100,10 +100,12 @@ class House:
         self.geometry: Polygon = Polygon(building_id_json["geometriePolygoon"]["polygon"]["coordinates"][0])
 
 
-    def get_map_rectangle_id(self):
+    def get_tiffs_path(self):
         """
-        Function to check in which grid rectangle the house is located on the Flanders topographic map *NGI 1/1*.
+        Function to get the path of the DSM and DTM GeoTiff files that comprise the image of the house.
+        
         Process:
+        First, we have check in which grid rectangle the house is located on the Flanders topographic map *NGI 1/1*.
         As the coordinates of both the house and the map uses the Lambert 72 system, 
         we can directly compute if the house is in the **BoundingBox** (= geographic boundaries) of a rectangle.
 
@@ -112,10 +114,11 @@ class House:
         Each rectangle covers an area of 640 km² (32 km in X direction, 20 km in Y direction).
         """
         # Get the DataFrame containing the **BoundingBox** of a each rectangle
-        tiff_boundingbox_df: pd.DataFrame = get_all_tiff_boundingbox()
+        tiff_boundingbox_df: pd.DataFrame = get_dsm_dtm_tiffs()
 
         # Find in which rectangle **BoundingBox** the house is located
-        map_rectangle_id_np: pd.core.series.Series = tiff_boundingbox_df.GeoTiff_ID[tiff_boundingbox_df.BoundingBox.apply(lambda bb_tuple: (bb_tuple[0] <= self.X_Lambert72 <= bb_tuple[2]) and (bb_tuple[1] <= self.Y_Lambert72 <= bb_tuple[3]))]
+        dsm_dtm_tiffs_df: pd.DataFrame = tiff_boundingbox_df[tiff_boundingbox_df.DSM_BoundingBox.apply(lambda bb_tuple: (bb_tuple[0] <= self.X_Lambert72 <= bb_tuple[2]) and (bb_tuple[1] <= self.Y_Lambert72 <= bb_tuple[3]))]
 
-        # Get the id from the map_rectangle_id_np (which is a numpy representation)
-        self.map_rectangle_id: str = map_rectangle_id_np.values[0]
+        # Get the DSM and DTM relative filepaths
+        self.dsm_filepath: str = dsm_dtm_tiffs_df.DSM_Filepath.values[0] # .values[0] to get the string value from the numpy representation
+        self.dtm_filepath: str = dsm_dtm_tiffs_df.DTM_Filepath.values[0]

@@ -24,24 +24,24 @@ import rasterio as rio
 
 
 # ============================================================
-# Main function
+# Main functions
 # ============================================================
 
-def get_all_tiff_boundingbox() -> pd.DataFrame:
+def get_tiffs(folder: str) -> pd.DataFrame:
     """
-    Function to get the **BoundingBox** of all the geoTiff files.
-
-    Return: a DataFrame with the GeoTiff filenames
-    and their corresponding BoundingBox's as columns
+    Function to get all GeoTiff files within the DSM or DTM folder.
+    Param: `folder` is either "DSM" or "DTM" folder    
+    Return: a DataFrame with the GeoTiff filenames, paths
+    and their corresponding BoundingBox's as columns    
     """
-    # Create empty lists:
+    # Create empty lists
     geotiff_id_list: List = [] # will contain the rectangle number of each GeoTiff
     geotiff_list: List = []  # will contain all GeoTiff filenames
     geotiff_path_list: List = [] # will contain the GeoTiff's filepaths
-    dsm_boundingbox_list: List = [] # will contain the BoundingBox of each GeoTiff
+    boundingbox_list: List = [] # will contain the BoundingBox of each GeoTiff
 
     # Get the relative path of the directory that contains all the GeoTiff files
-    folder_path = os.path.join("assets","DSM")
+    folder_path = os.path.join("assets", folder)
 
     # Get all the filenames within the directory
     for path, dirs, files in os.walk(folder_path):
@@ -61,19 +61,39 @@ def get_all_tiff_boundingbox() -> pd.DataFrame:
                 geotiff_path_list.append(geotiff_path)
                 
                 # Open the GeoTiff file and get its BoundingBox
-                # We open within a context manager so as to close the file after reading the info
+                # We open within a context manager 
+                # so as to close the file after reading the info and save memory
                 with rio.open(geotiff_path) as tiff_file:
                     boundingbox = tiff_file.bounds
-                    dsm_boundingbox_list.append(boundingbox)
+                    boundingbox_list.append(boundingbox)
 
-    # Create a DataFrame from geotiff_list and dsm_boundingbox_list
-    return pd.DataFrame(list(zip(geotiff_id_list, geotiff_list, geotiff_path_list, dsm_boundingbox_list)), columns=["GeoTiff_ID", "GeoTiff", "Filepath", "BoundingBox"])
+    # Create a DataFrame from the lists
+    return pd.DataFrame(list(zip(geotiff_id_list, geotiff_list, geotiff_path_list, boundingbox_list)), columns=["GeoTiff_ID", f"{folder}_GeoTiff", f"{folder}_Filepath", f"{folder}_BoundingBox"])
+
+
+def get_dsm_dtm_tiffs() -> pd.DataFrame:
+    """
+    Function to get all DSM and DTM GeoTiff files.
+  
+    Return: a DataFrame with the GeoTiff filenames, paths
+    and their corresponding BoundingBox's as columns    
+    """
+
+    # Get DSM and DTM GeoTiff files
+    dsm_tiffs_df: pd.DataFrame = get_tiffs("DSM")
+    dtm_tiffs_df: pd.DataFrame = get_tiffs("DTM")
+
+    # Join both DataFrames on their "GeoTiff_ID" as index
+    return dsm_tiffs_df.set_index("GeoTiff_ID").join(dtm_tiffs_df.set_index("GeoTiff_ID"))
 
 # ============================================================
 # Run
 # ============================================================
 
-## Executes the main() function if this file is directly run
+## Executes the get_dsm_dtm_tiffs() function if this file is directly run
 if __name__ == "__main__":
-    tiff_boundingbox_df: pd.DataFrame = get_all_tiff_boundingbox()
-    print(tiff_boundingbox_df)
+    dsm_dtm_tiffs_df: pd.DataFrame = get_dsm_dtm_tiffs()
+    print(dsm_dtm_tiffs_df)
+
+    # Test if DSM and DTM GeoTiff files have the same BoundingBox
+    print(all(dsm_dtm_tiffs_df.DSM_BoundingBox == dsm_dtm_tiffs_df.DTM_BoundingBox))

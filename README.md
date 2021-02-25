@@ -31,20 +31,27 @@ It is a 2 weeks project.
 The deadline to complete it is scheduled to `25/02/2021 at 5 p.m.`.
 
 ### Visuals
-add images or gif
-Tools: ttygif or Asciinema
+3D plot of the *Palace of Justice Antwerp*:
+![3D Model of Justice Palace in Antwerp](core\assets\Palace_of_Justice_Antwerp.gif)
 
 
 ## Installation
-To run the program, you need the following libraries:
+To run the program, you need:
+- To download the **DSM** and **DTM** data
+- To install the libraries below.
 
-| Library       | Description / Used For              |
-| ------------- | :---------------------------------- |
-| Pandas        |                                     |
-| Numpy         |                                     |
-|               |                                     |
-|               |                                     |
-|               |                                     |
+### Download DSM and DTM data
+- [DSM](http://www.geopunt.be/download?container=dhm-vlaanderen-ii-dsm-raster-1m&title=Digitaal%20Hoogtemodel%20Vlaanderen%20II,%20DSM,%20raster,%201m)
+- [DTM](http://www.geopunt.be/download?container=dhm-vlaanderen-ii-dtm-raster-1m&title=Digitaal%20Hoogtemodel%20Vlaanderen%20II,%20DTM,%20raster,%201m)
+
+
+### Install the libraries
+| Library       | Used to                                        |
+| ------------- | :----------------------------------------------|
+| Numpy         | To handle Numpy arrays                         |
+| Pandas        | To store and access info in a DataFrame        |
+| Rasterio      | To read geospatial raster data                 |
+| Plotly        | To plot the building in 3D                     |
 
 
 Follow these instructions to install the required libraries: on terminal
@@ -67,9 +74,11 @@ Or
 ```python3 run_progam.py```
 
 ### Usage example
-3D plot of the *Palace of Justice Antwerp*:
-**_ADD_IMAGE_INPUT_**
-**_ADD_IMAGE_OUTPUT_**
+#### Example of input the user can give:
+![Example input](core\assets\3d_plot_examples\Example_input.png)
+
+#### Output of the example:
+![Example output](core\assets\3d_plot_examples\Example_output.png)
 
 ## Architecture
 The project is structured as follows:
@@ -89,9 +98,6 @@ The project is structured as follows:
 │   └───assets              :contains the GeoTiff files
 │       ├───DSM
 │       └───DTM
-│       
-│   
-└───data                    :contains the 3D plots saved by the user
 ```
 
 ### Roadmap
@@ -117,3 +123,6 @@ I would like to thank my colleagues and coaches at beCode for their help and gui
 - Determine requirements for contributions
 - Add instructions on how to contribute
 - Read GeoTiff files from website without having to download them
+- Show 2D and 3D plots next to each other to compare
+- Improve the layout of the 3D plot
+

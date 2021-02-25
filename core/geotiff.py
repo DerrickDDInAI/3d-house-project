@@ -12,11 +12,11 @@ The map uses the Lambert 72 system.
 # Import
 # =====================================================================
 
-## Import internal modules
+# Import internal modules
 import os.path
 from typing import List, Set, Dict, TypedDict, Tuple, Optional
 
-## Import 3rd party modules
+# Import 3rd party modules
 import pandas as pd
 import rasterio as rio
 
@@ -33,10 +33,10 @@ def get_tiffs(folder: str) -> pd.DataFrame:
     and their corresponding BoundingBox's as columns    
     """
     # Create empty lists
-    geotiff_id_list: List = [] # will contain the rectangle number of each GeoTiff
+    geotiff_id_list: List = []  # will contain the rectangle number of each GeoTiff
     geotiff_list: List = []  # will contain all GeoTiff filenames
-    geotiff_path_list: List = [] # will contain the GeoTiff's filepaths
-    boundingbox_list: List = [] # will contain the BoundingBox of each GeoTiff
+    geotiff_path_list: List = []  # will contain the GeoTiff's filepaths
+    boundingbox_list: List = []  # will contain the BoundingBox of each GeoTiff
 
     # Get the relative path of the directory that contains all the GeoTiff files
     folder_path = os.path.join("assets", folder)
@@ -57,9 +57,9 @@ def get_tiffs(folder: str) -> pd.DataFrame:
                 # Get the filepath
                 geotiff_path = os.path.join(path, filename)
                 geotiff_path_list.append(geotiff_path)
-                
+
                 # Open the GeoTiff file and get its BoundingBox
-                # We open within a context manager 
+                # We open within a context manager
                 # so as to close the file after reading the info and save memory
                 with rio.open(geotiff_path) as tiff_file:
                     boundingbox = tiff_file.bounds
@@ -72,7 +72,7 @@ def get_tiffs(folder: str) -> pd.DataFrame:
 def get_dsm_dtm_tiffs() -> pd.DataFrame:
     """
     Function to get all DSM and DTM GeoTiff files.
-  
+
     Return: a DataFrame with the GeoTiff filenames, paths
     and their corresponding BoundingBox's as columns    
     """
@@ -88,7 +88,8 @@ def get_dsm_dtm_tiffs() -> pd.DataFrame:
 # Run
 # ============================================================
 
-## Executes the get_dsm_dtm_tiffs() function if this file is directly run
+
+# Executes the get_dsm_dtm_tiffs() function if this file is directly run
 if __name__ == "__main__":
     dsm_dtm_tiffs_df: pd.DataFrame = get_dsm_dtm_tiffs()
     print(dsm_dtm_tiffs_df)

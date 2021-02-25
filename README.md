@@ -32,7 +32,7 @@ The deadline to complete it is scheduled to `25/02/2021 at 5 p.m.`.
 
 ### Visuals
 3D plot of the *Palace of Justice Antwerp*:
-![3D Model of Justice Palace in Antwerp](core/assets/Palace_of_Justice_Antwerp.gif)
+![3D Model of Justice Palace in Antwerp](https://github.com/DerrickDDInAI/3d-house-project/blob/main/core/assets/3d_plot_examples/Palace_of_Justice_Antwerp.gif?raw=true)
 
 
 ## Installation
@@ -44,6 +44,12 @@ To run the program, you need:
 - [DSM](http://www.geopunt.be/download?container=dhm-vlaanderen-ii-dsm-raster-1m&title=Digitaal%20Hoogtemodel%20Vlaanderen%20II,%20DSM,%20raster,%201m)
 - [DTM](http://www.geopunt.be/download?container=dhm-vlaanderen-ii-dtm-raster-1m&title=Digitaal%20Hoogtemodel%20Vlaanderen%20II,%20DTM,%20raster,%201m)
 
+Save the data into the following directories:
+```
+core/assets
+     ├───DSM
+     └───DTM
+```
 
 ### Install the libraries
 | Library       | Used to                                        |

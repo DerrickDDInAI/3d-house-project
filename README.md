@@ -70,14 +70,14 @@ Follow these instructions to install the required libraries: on terminal
 You can even install the libraries and run the program directly after the installation by running the following command line:
 
 4. Run:
-```pip3 install -r requirements.txt && python3 run_program.py```
+```pip3 install -r requirements.txt && python3 main.py```
 
 ## Instructions
 ### How to run the program
-- Run `run_progam.py` to start the program.
+- Run `main.py` to start the program.
 Or
 - On your terminal:
-```python3 run_progam.py```
+```python3 main.py```
 
 ### Usage example
 #### Example of input the user can give:
@@ -92,14 +92,15 @@ The project is structured as follows:
 ```
 3d-house-project
 │   README.md               :explains the project
-│   run_game.py             :script to run in order to start the program.
 │   requirements.txt        :packages to install to run the program
 │   LICENSE.txt             :license information
 │   .gitignore              :specifies which files to ignore when pushing to the repository
 │
 └───core                    :directory contains all the core scripts of the program
 │   │   __init__.py
-│   │   main.py             :execute the program
+│   │   main.py             :script to run in order to start the program
+│   │   house.py            :script to create a House object and get info
+│   │   geotiff.py          :script to associate the DSM and DTM tiffs to a House object
 │   │
 │   └───assets              :contains the GeoTiff files
 │       ├───DSM

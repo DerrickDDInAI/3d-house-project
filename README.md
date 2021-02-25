@@ -75,10 +75,10 @@ Or
 
 ### Usage example
 #### Example of input the user can give:
-![Example input](core\assets\3d_plot_examples\Example_input.png)
+![Example input](core/assets/3d_plot_examples/Example_input.png)
 
 #### Output of the example:
-![Example output](core\assets\3d_plot_examples\Example_output.png)
+![Example output](core/assets/3d_plot_examples/Example_output.png)
 
 ## Architecture
 The project is structured as follows:

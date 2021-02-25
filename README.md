@@ -32,7 +32,7 @@ The deadline to complete it is scheduled to `25/02/2021 at 5 p.m.`.
 
 ### Visuals
 3D plot of the *Palace of Justice Antwerp*:
-![Alt 3D Model of Justice Palace in Antwerp](core/assets/Palace_of_Justice_Antwerp.gif)
+![3D Model of Justice Palace in Antwerp](core/assets/Palace_of_Justice_Antwerp.gif)
 
 
 ## Installation

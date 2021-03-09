@@ -92,13 +92,13 @@ The project is structured as follows:
 ```
 3d-house-project
 │   README.md               :explains the project
+│   main.py             :script to run in order to start the program
 │   requirements.txt        :packages to install to run the program
 │   LICENSE.txt             :license information
 │   .gitignore              :specifies which files to ignore when pushing to the repository
 │
 └───core                    :directory contains all the core scripts of the program
 │   │   __init__.py
-│   │   main.py             :script to run in order to start the program
 │   │   house.py            :script to create a House object and get info
 │   │   geotiff.py          :script to associate the DSM and DTM tiffs to a House object
 │   │

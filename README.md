@@ -92,7 +92,7 @@ The project is structured as follows:
 ```
 3d-house-project
 │   README.md               :explains the project
-│   main.py             :script to run in order to start the program
+│   main.py                 :script to run in order to start the program
 │   requirements.txt        :packages to install to run the program
 │   LICENSE.txt             :license information
 │   .gitignore              :specifies which files to ignore when pushing to the repository
